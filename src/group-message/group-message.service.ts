@@ -38,6 +38,17 @@ export class GroupMessageService {
     }
   }
 
+  async findGroupWithGroupName(groupName: string) {
+    try {
+      const group = await this.prisma.groups.findMany({ where: { name: groupName } });
+      if (!group) throw new BadRequestException('Group not found!');
+      return group;
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException(error.message || 'Internal server error!')
+    }
+  }
+
   async update(id: string, updateGroupMessageDto: UpdateGroupMessageDto) {
     try {
       const existingMessage = await this.prisma.groupMessages.findFirst({ where: { id } });
@@ -52,10 +63,27 @@ export class GroupMessageService {
   async remove(id: string) {
     try {
       await this.findOne(id);
-      return await this.prisma.groupMessages.delete({ where: { id }});
+      return await this.prisma.groupMessages.delete({ where: { id } });
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
       throw new InternalServerErrorException(error.message || 'Internal server error!')
+    }
+  }
+
+  async removeAutomatic(groupsId: string) {
+    try {
+      const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+      const deleted = await this.prisma.groupMessages.deleteMany({
+        where: {
+          groupsId,
+          createdAt: { lt: threeDaysAgo }
+        }
+      });
+      if (deleted.count === 0) throw new BadRequestException('No old messages found for this group!');
+      return deleted;
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException(error.message || 'Internal server error!');
     }
   }
 }

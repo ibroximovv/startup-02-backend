@@ -21,7 +21,7 @@ export class FriendMessageService {
       throw new InternalServerErrorException(error.message || 'Internal server error!')
     }
   }
-  
+
   async findAll() {
     try {
       return await this.prisma.friendMessage.findMany();
@@ -57,6 +57,23 @@ export class FriendMessageService {
     } catch (error) {
       if (error instanceof BadRequestException) throw error;
       throw new InternalServerErrorException(error.message || 'Internal server error!')
+    }
+  }
+
+  async removeAutomatic(friendId: string) {
+    try {
+      const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+      const deleted = await this.prisma.friendMessage.deleteMany({
+        where: {
+          friendId: friendId,
+          createdAt: { lt: threeDaysAgo }
+        }
+      });
+      if (deleted.count === 0) throw new BadRequestException('No old messages found for this friend!');
+      return deleted;
+    } catch (error) {
+      if (error instanceof BadRequestException) throw error;
+      throw new InternalServerErrorException(error.message || 'Internal server error!');
     }
   }
 }

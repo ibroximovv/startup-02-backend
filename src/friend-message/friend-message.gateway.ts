@@ -50,28 +50,35 @@ export class FriendMessageGateway {
   @SubscribeMessage('findAllFriendMessage')
   findAll() {
     this.friendMessageService.findAll().then((res) => {
-      this.server.emit('findAllFriendMessage', res)
+      this.server.emit('all', res)
     });
   }
 
   @SubscribeMessage('findOneFriendMessage')
   findOne(@MessageBody() id: string) {
     this.friendMessageService.findOne(id).then((res) => {
-      this.server.emit('findOneFriendMessage', res)
+      this.server.emit('one', res)
     });
   }
 
   @SubscribeMessage('updateFriendMessage')
   update(@MessageBody() updateFriendMessageDto: UpdateFriendMessageDto) {
     this.friendMessageService.update(updateFriendMessageDto.id, updateFriendMessageDto).then((res) => {
-      this.server.emit('updateFriendMessage', res)
+      this.server.emit('updated', res)
     });
   }
 
   @SubscribeMessage('removeFriendMessage')
   remove(@MessageBody() id: string) {
     this.friendMessageService.remove(id).then((res) => {
-      this.server.emit('removeFriendMessage', res)
+      this.server.emit('removed', res)
     });
+  }
+
+  @SubscribeMessage('removeAutomaticFriendMessage')
+  removeAutomatic(@MessageBody() friendId: string) {
+    this.friendMessageService.removeAutomatic(friendId).then((res) => {
+      this.server.emit('remmovedAutomatic', res)
+    })
   }
 }

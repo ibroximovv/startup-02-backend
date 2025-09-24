@@ -11,6 +11,11 @@ import { GroupsModule } from './groups/groups.module';
 import { MailModule } from './mail/mail.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { GroupMessageModule } from './group-message/group-message.module';
+import { PlansModule } from './plans/plans.module';
+import { LessonModule } from './lesson/lesson.module';
+import { GoogleMeetingModule } from './google-meeting/google-meeting.module';
+import { LessonEnrollmentsModule } from './lesson-enrollments/lesson-enrollments.module';
+import { LessonRatingsModule } from './lesson-ratings/lesson-ratings.module';
 
 @Module({
   imports: [
@@ -24,6 +29,11 @@ import { GroupMessageModule } from './group-message/group-message.module';
     MailModule,
     PrismaModule,
     GroupMessageModule,
+    PlansModule,
+    LessonModule,
+    GoogleMeetingModule,
+    LessonEnrollmentsModule,
+    LessonRatingsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
