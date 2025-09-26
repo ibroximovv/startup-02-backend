@@ -39,6 +39,7 @@ export class GroupsService {
           where,
           skip,
           take,
+          include: { owner: true, GroupMembers: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.groups.count({ where })

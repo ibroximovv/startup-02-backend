@@ -54,6 +54,7 @@ export class ChallengesService {
           where,
           skip,
           take,
+          include: { owner: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.challenges.count({ where })

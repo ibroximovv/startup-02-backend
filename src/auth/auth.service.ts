@@ -127,7 +127,8 @@ export class AuthService {
           skip,
           take,
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
-          omit: { password: true }
+          omit: { password: true },
+          include: { Challenges: true, direction: true, FriendMessage: true, Plans: true, LessonRatings: true, LessonEnrollments: true, Friends: true, Groups: true, FriendOf: true, GroupMembers: true, GroupMessages: true, Lesson: true }
         }),
         this.prisma.users.count({ where })
       ]);

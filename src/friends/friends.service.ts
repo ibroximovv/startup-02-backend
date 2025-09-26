@@ -63,6 +63,7 @@ export class FriendsService {
           where,
           skip,
           take,
+          include: { user: true, friend: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.friends.count({ where }),

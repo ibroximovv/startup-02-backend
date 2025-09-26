@@ -16,6 +16,7 @@ import { LessonModule } from './lesson/lesson.module';
 import { GoogleMeetingModule } from './google-meeting/google-meeting.module';
 import { LessonEnrollmentsModule } from './lesson-enrollments/lesson-enrollments.module';
 import { LessonRatingsModule } from './lesson-ratings/lesson-ratings.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -34,8 +35,21 @@ import { LessonRatingsModule } from './lesson-ratings/lesson-ratings.module';
     GoogleMeetingModule,
     LessonEnrollmentsModule,
     LessonRatingsModule,
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60000, // 1minute 20 requests
+          limit: 20
+        }
+      ]
+    })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: 'APP_GUARD',
+      useClass: ThrottlerGuard // global rate limiter
+    }
+  ],
 })
 export class AppModule {}

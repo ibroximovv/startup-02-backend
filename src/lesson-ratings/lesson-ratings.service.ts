@@ -51,6 +51,7 @@ export class LessonRatingsService {
           where,
           skip,
           take,
+          include: { lesson: true, student: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.lessonRatings.count({ where })

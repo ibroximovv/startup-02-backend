@@ -49,6 +49,7 @@ export class PlansService {
           where,
           skip,
           take,
+          include: { users: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.plans.count({ where })

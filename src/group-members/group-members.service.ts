@@ -52,6 +52,7 @@ export class GroupMembersService {
           where,
           skip,
           take,
+          include: { users: true, group: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.groupMembers.count({ where }),

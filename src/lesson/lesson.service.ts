@@ -42,6 +42,7 @@ export class LessonService {
           where,
           skip,
           take,
+          include: { teacher: true, LessonEnrollments: true },
           orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
         }),
         this.prisma.lesson.count({ where })
